@@ -3,118 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>訂餐系統</title>
+    <title>點餐系統</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
             padding: 20px;
-        }
-
-        h1, h2 {
             color: #333;
         }
 
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-        }
-
-        .menu-item button {
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .menu-item button:hover {
-            background-color: #45a049;
-        }
-
-        .menu-item input {
-            width: 50px;
+        h1, h2 {
+            color: #4CAF50;
             text-align: center;
         }
 
-        #cart {
-            margin-top: 10px;
-        }
-
-        .cart-item {
-            position: relative;
+        .menu-item, .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin: 10px 0;
-            padding: 10px;
+            padding: 15px;
             background-color: #fff;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .cart-item .item-info {
-            flex-grow: 1;
-            padding-right: 150px; 
+        .menu-item:hover, .cart-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .cart-item .cart-buttons {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-item button {
-            margin: 5px 0;
-            padding: 5px 10px;
-            background-color: #f44336;
+        .menu-item button, .cart-item button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            width: 60px; 
+            transition: background-color 0.3s ease;
         }
 
-        .cart-item button.decrease {
-            background-color: #FFA500; 
+        .menu-item button:hover, .cart-item button:hover {
+            background-color: #45a049;
         }
 
-        .cart-item button:hover {
-            opacity: 0.8;
+        .cart-item .cart-buttons button {
+            background-color: #f44336;
         }
 
-        .cart-item span {
-            display: inline-block;
-            text-align: left;
+        .cart-item .cart-buttons button.decrease {
+            background-color: #FFA500;
+        }
+
+        .cart-item .cart-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        #cart {
+            margin-top: 20px;
+        }
+
+        #cart p {
+            font-size: 1.2rem;
+            color: #777;
+            text-align: center;
+        }
+
+        #cart p.total {
+            font-weight: bold;
+            color: #4CAF50;
+            text-align: right;
+            font-size: 1.4rem;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <h1>訂餐系統</h1>
+    <div class="container">
+        <h1>點餐系統</h1>
 
-    <div class="menu-item">
-        <span>炸雞 - $10</span>
-        <input type="number" id="quantity-chicken" value="1" min="1">
-        <button onclick="addToCart('炸雞', 10, parseInt(document.getElementById('quantity-chicken').value))">添加</button>
-    </div>
+        <div class="menu-item">
+            <span>炸雞 - $10</span>
+            <input type="number" id="quantity-chicken" value="1" min="1">
+            <button onclick="addToCart('炸雞', 10, parseInt(document.getElementById('quantity-chicken').value))">添加</button>
+        </div>
 
-    <div class="menu-item">
-        <span>披薩 - $15</span>
-        <input type="number" id="quantity-pizza" value="1" min="1">
-        <button onclick="addToCart('披薩', 15, parseInt(document.getElementById('quantity-pizza').value))">添加</button>
-    </div>
+        <div class="menu-item">
+            <span>披薩 - $15</span>
+            <input type="number" id="quantity-pizza" value="1" min="1">
+            <button onclick="addToCart('披薩', 15, parseInt(document.getElementById('quantity-pizza').value))">添加</button>
+        </div>
 
-    <div class="menu-item">
-        <span>飲料 - $15</span>
-        <input type="number" id="quantity-drink" value="1" min="1">
-        <button onclick="addToCart('飲料', 15, parseInt(document.getElementById('quantity-drink').value))">添加</button>
-    </div>
+        <div class="menu-item">
+            <span>飲料 - $15</span>
+            <input type="number" id="quantity-drink" value="1" min="1">
+            <button onclick="addToCart('飲料', 15, parseInt(document.getElementById('quantity-drink').value))">添加</button>
+        </div>
 
-    <h2>購物車</h2>
-    <div id="cart">
-        <p>目前沒東西</p>
+        <h2>購物車</h2>
+        <div id="cart">
+            <p>目前沒東西</p>
+        </div>
     </div>
 
     <script>
@@ -154,7 +165,7 @@
                     </div>`;
             });
 
-            cartDiv.innerHTML += `<p>總共：$${total}</p>`;
+            cartDiv.innerHTML += `<p class="total">總共：$${total}</p>`;
         }
 
         function decreaseQuantity(index) {
@@ -175,8 +186,8 @@
             displayCart();
         }
 
-        
         displayCart();
     </script>
 </body>
 </html>
+<!-- 不錯看的版本 -->
