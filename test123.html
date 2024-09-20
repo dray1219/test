@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂餐系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .menu-item button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-item button:hover {
+            background-color: #45a049;
+        }
+
+        .menu-item input {
+            width: 50px;
+            text-align: center;
+        }
+
+        #cart {
+            margin-top: 10px;
+        }
+
+        .cart-item {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .cart-item .item-info {
+            flex-grow: 1;
+            padding-right: 150px; 
+        }
+
+        .cart-item .cart-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item button {
+            margin: 5px 0;
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 60px; 
+        }
+
+        .cart-item button.decrease {
+            background-color: #FFA500; 
+        }
+
+        .cart-item button:hover {
+            opacity: 0.8;
+        }
+
+        .cart-item span {
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>訂餐系統</h1>
+
+    <div class="menu-item">
+        <span>炸雞 - $10</span>
+        <input type="number" id="quantity-chicken" value="1" min="1">
+        <button onclick="addToCart('炸雞', 10, parseInt(document.getElementById('quantity-chicken').value))">添加</button>
+    </div>
+
+    <div class="menu-item">
+        <span>披薩 - $15</span>
+        <input type="number" id="quantity-pizza" value="1" min="1">
+        <button onclick="addToCart('披薩', 15, parseInt(document.getElementById('quantity-pizza').value))">添加</button>
+    </div>
+
+    <div class="menu-item">
+        <span>飲料 - $15</span>
+        <input type="number" id="quantity-drink" value="1" min="1">
+        <button onclick="addToCart('飲料', 15, parseInt(document.getElementById('quantity-drink').value))">添加</button>
+    </div>
+
+    <h2>購物車</h2>
+    <div id="cart">
+        <p>目前沒東西</p>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function addToCart(item, price, quantity) {
+            const existingItem = cart.find(entry => entry.item === item);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+                existingItem.totalPrice = existingItem.quantity * price;
+            } else {
+                cart.push({ item, price, quantity: quantity, totalPrice: price * quantity });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function displayCart() {
+            const cartDiv = document.getElementById('cart');
+            cartDiv.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartDiv.innerHTML = '<p>目前沒東西</p>';
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((entry, index) => {
+                total += entry.totalPrice;
+                cartDiv.innerHTML += 
+                    <div class="cart-item">
+                        <span class="item-info">${entry.item} * ${entry.quantity} - $${entry.totalPrice}</span>
+                        <div class="cart-buttons">
+                            <button class="decrease" onclick="decreaseQuantity(${index})">減少</button>
+                            <button onclick="removeFromCart(${index})">移除</button>
+                        </div>
+                    </div>;
+            });
+
+            cartDiv.innerHTML += <p>總共：$${total}</p>;
+        }
+
+        function decreaseQuantity(index) {
+            const item = cart[index];
+            if (item.quantity > 1) {
+                item.quantity--;
+                item.totalPrice = item.quantity * item.price;
+            } else {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+       
+        displayCart();
+    </script>
+</body>
+</html>
+
