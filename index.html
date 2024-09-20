@@ -144,17 +144,17 @@
             let total = 0;
             cart.forEach((entry, index) => {
                 total += entry.totalPrice;
-                cartDiv.innerHTML += 
+                cartDiv.innerHTML += `
                     <div class="cart-item">
                         <span class="item-info">${entry.item} * ${entry.quantity} - $${entry.totalPrice}</span>
                         <div class="cart-buttons">
                             <button class="decrease" onclick="decreaseQuantity(${index})">減少</button>
                             <button onclick="removeFromCart(${index})">移除</button>
                         </div>
-                    </div>;
+                    </div>`;
             });
 
-            cartDiv.innerHTML += <p>總共：$${total}</p>;
+            cartDiv.innerHTML += `<p>總共：$${total}</p>`;
         }
 
         function decreaseQuantity(index) {
@@ -175,9 +175,8 @@
             displayCart();
         }
 
-       
+        
         displayCart();
     </script>
 </body>
 </html>
-
